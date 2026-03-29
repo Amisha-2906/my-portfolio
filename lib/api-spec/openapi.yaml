@@ -1,0 +1,279 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: API specification for Analyst Portfolio
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: portfolio
+    description: Portfolio data operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /portfolio:
+    get:
+      operationId: getPortfolio
+      tags: [portfolio]
+      summary: Get portfolio data
+      description: Returns all portfolio content
+      responses:
+        "200":
+          description: Portfolio data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Portfolio"
+    put:
+      operationId: updatePortfolio
+      tags: [portfolio]
+      summary: Update portfolio data
+      description: Updates all portfolio content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Portfolio"
+      responses:
+        "200":
+          description: Updated portfolio data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Portfolio"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    SocialLink:
+      type: object
+      properties:
+        platform:
+          type: string
+        url:
+          type: string
+        label:
+          type: string
+      required:
+        - platform
+        - url
+        - label
+    HeroSection:
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: string
+        location:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        linkedin:
+          type: string
+        github:
+          type: string
+        profileImageUrl:
+          type: string
+        resumeUrl:
+          type: string
+      required:
+        - name
+        - title
+        - subtitle
+        - location
+        - email
+    AboutSection:
+      type: object
+      properties:
+        summary:
+          type: string
+        highlights:
+          type: array
+          items:
+            type: string
+      required:
+        - summary
+        - highlights
+    Skill:
+      type: object
+      properties:
+        category:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+      required:
+        - category
+        - items
+    Experience:
+      type: object
+      properties:
+        id:
+          type: string
+        company:
+          type: string
+        companyLogo:
+          type: string
+        role:
+          type: string
+        location:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        current:
+          type: boolean
+        description:
+          type: string
+        bullets:
+          type: array
+          items:
+            type: string
+        technologies:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - company
+        - role
+        - location
+        - startDate
+        - description
+        - bullets
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        impact:
+          type: string
+        tools:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        link:
+          type: string
+        imageUrl:
+          type: string
+      required:
+        - id
+        - title
+        - description
+        - impact
+        - tools
+        - category
+    Education:
+      type: object
+      properties:
+        id:
+          type: string
+        institution:
+          type: string
+        degree:
+          type: string
+        field:
+          type: string
+        startYear:
+          type: string
+        endYear:
+          type: string
+        gpa:
+          type: string
+        honors:
+          type: string
+      required:
+        - id
+        - institution
+        - degree
+        - field
+        - startYear
+        - endYear
+    Certification:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        issuer:
+          type: string
+        date:
+          type: string
+        credentialId:
+          type: string
+        url:
+          type: string
+      required:
+        - id
+        - name
+        - issuer
+        - date
+    Portfolio:
+      type: object
+      properties:
+        hero:
+          $ref: "#/components/schemas/HeroSection"
+        about:
+          $ref: "#/components/schemas/AboutSection"
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill"
+        experience:
+          type: array
+          items:
+            $ref: "#/components/schemas/Experience"
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+        education:
+          type: array
+          items:
+            $ref: "#/components/schemas/Education"
+        certifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Certification"
+      required:
+        - hero
+        - about
+        - skills
+        - experience
+        - projects
+        - education
+        - certifications
