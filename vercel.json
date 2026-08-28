@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "installCommand": "npx --yes pnpm@10.26.1 install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter @workspace/portfolio run build",
+  "builds": [
+    {
+      "src": "artifacts/api-server/src/index.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "artifacts/portfolio/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "artifacts/api-server/src/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "artifacts/portfolio/$1"
+    }
+  ],
+  "env": {
+    "NEON_DATABASE_URL": "@neon_database_url"
+  }
+}
